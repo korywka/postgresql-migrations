@@ -1,6 +1,6 @@
 # postgresql-migrations
 
-Simple migrations for [node-postgres](https://github.com/brianc/node-postgres)
+Simple migration tool for [node-postgres](https://github.com/brianc/node-postgres)
 
 ```shell
 npm i postgresql-migrations
