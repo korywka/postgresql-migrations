@@ -1,0 +1,43 @@
+{
+	"name": "postgresql-migrations",
+	"version": "1.0.0",
+	"description": "Simple migrations for node-postgres",
+	"type": "module",
+	"main": "index.js",
+	"types": "index.d.ts",
+	"bin": {
+		"pg-migrate": "index.js"
+	},
+	"scripts": {
+		"check": "npx tsc",
+		"lint": "eslint . --fix"
+	},
+	"dependencies": {
+		"commander": "11.0.0"
+	},
+	"devDependencies": {
+		"@types/node": "20.6.1",
+		"@types/pg": "8.10.3",
+		"eslint": "8.50.0",
+		"eslint-config-ecmascript": "2.5.0",
+		"pg": "8.11.3",
+		"typescript": "5.2.2"
+	},
+	"peerDependencies": {
+		"pg": "^8.0.0"
+	},
+	"engines": {
+		"node": ">=18"
+	},
+	"files": [
+		"index.js",
+		"index.d.ts"
+	],
+	"keywords": [
+		"postgresql",
+		"migrations",
+		"pg"
+	],
+	"repository": "korywka/postgresql-migrations",
+	"license": "MIT"
+}
