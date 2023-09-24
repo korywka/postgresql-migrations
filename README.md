@@ -5,8 +5,8 @@ Simple migrations for [node-postgres](https://github.com/brianc/node-postgres)
 ```shell
 npm i postgresql-migrations
 mkdir migrations
-pg-migrate new
-pg-migrate run
+npx pg-migrate new
+npx pg-migrate run
 ```
 
 ## Create new migration file
