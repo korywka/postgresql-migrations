@@ -21,7 +21,7 @@ program
 program.command('new')
 	.description('Create empty migration file')
 	.argument('[name]', 'migration name')
-	.option('-p, --path <string>', 'path to migrations directory', DEFAULT_DIRECTORY)
+	.option('-d, --dir <string>', 'path to migrations directory', DEFAULT_DIRECTORY)
 	.action(async (name, options) => {
 		/**
 		 * @param {number} number
@@ -39,13 +39,13 @@ program.command('new')
 			+ pad(date.getMinutes())
 			+ pad(date.getSeconds());
 		const filename = `${prefix}${suffix}.sql`;
-		await fs.writeFile(path.join(options.path, filename), '');
+		await fs.writeFile(path.join(options.dir, filename), '');
 	});
 
 program.command('run')
 	.description('Run migrations')
 	.argument('<connection_url>', 'database connection url (e.g.: postgres://user:password@host:5432/database)')
-	.option('-p, --path <string>', 'path to migrations directory', DEFAULT_DIRECTORY)
+	.option('-d, --dir <string>', 'path to migrations directory', DEFAULT_DIRECTORY)
 	.option('-t, --table <string>', 'migrations history table name', DEFAULT_TABLE)
 	.action(async (connectionUrl, options) => {
 		const client = new pg.Client({ connectionString: connectionUrl });
@@ -62,7 +62,7 @@ program.command('run')
 			`);
 
 			const all = await fs
-				.readdir(options.path)
+				.readdir(options.dir)
 				.then((items) => items.filter((item) => item.endsWith('.sql')));
 
 			/** @type {string[]} */
@@ -74,7 +74,7 @@ program.command('run')
 			const files = all.filter((file) => !existing.includes(file));
 
 			for (const file of files) {
-				const sql = await fs.readFile(path.join(options.path, file), 'utf8');
+				const sql = await fs.readFile(path.join(options.dir, file), 'utf8');
 				// run migration
 				await client.query(sql);
 				// update migrations history
