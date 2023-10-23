@@ -82,6 +82,8 @@ program.command('run')
 			}
 
 			await client.query('COMMIT');
+
+			console.log(`Completed with ${files.length} new migrations.`);
 		} catch (error) {
 			await client.query('ROLLBACK');
 			throw error;
