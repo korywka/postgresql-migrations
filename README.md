@@ -14,8 +14,6 @@ npx pg-migrate run
 ```
 Usage: pg-migrate new [options] [name]
 
-Create empty migration file
-
 Arguments:
   name                migration name
 
@@ -28,11 +26,6 @@ Options:
 
 ```
 Usage: pg-migrate run [options] <connection_url>
-
-Run migrations
-
-Arguments:
-  connection_url        database connection url (e.g.: postgres://user:password@host:5432/database)
 
 Options:
 	--url <string> 				env name or value of database connection url (default env.DATABASE_URL)
