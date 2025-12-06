@@ -37,7 +37,7 @@
 		"migrations",
 		"pg"
 	],
-	"repository": "korywka/postgresql-migrations",
+	"repository": "github:korywka/postgresql-migrations",
 	"license": "MIT",
 	"prettier": {
 		"useTabs": true,
