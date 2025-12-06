@@ -2,23 +2,20 @@
 
 import path from 'node:path';
 import fs from 'node:fs/promises';
+import 'dotenv/config';
 import { Command } from 'commander';
 import pg from 'pg';
 
 const DEFAULT_DIRECTORY = 'migrations';
 const DEFAULT_TABLE = 'migrations';
-const { version } = await fs
-	.readFile('package.json', 'utf8')
-	.then((content) => JSON.parse(content));
+const { version } = await fs.readFile('package.json', 'utf8').then((content) => JSON.parse(content));
 
 const program = new Command();
 
-program
-	.name('pg-migrate')
-	.description('Simple migrations for node-postgres')
-	.version(version);
+program.name('pg-migrate').description('Simple migrations for node-postgres').version(version);
 
-program.command('new')
+program
+	.command('new')
 	.description('Create empty migration file')
 	.argument('[name]', 'migration name')
 	.option('-d, --dir <string>', 'path to migrations directory', DEFAULT_DIRECTORY)
@@ -32,23 +29,51 @@ program.command('new')
 		//generate unique name for migration
 		const date = new Date();
 		const suffix = name ? `_${name}` : '';
-		const prefix = date.getFullYear()
-			+ pad(date.getMonth() + 1)
-			+ pad(date.getDate())
-			+ pad(date.getHours())
-			+ pad(date.getMinutes())
-			+ pad(date.getSeconds());
+		const prefix =
+			date.getFullYear() +
+			pad(date.getMonth() + 1) +
+			pad(date.getDate()) +
+			pad(date.getHours()) +
+			pad(date.getMinutes()) +
+			pad(date.getSeconds());
 		const filename = `${prefix}${suffix}.sql`;
 		await fs.writeFile(path.join(options.dir, filename), '');
 	});
 
-program.command('run')
+program
+	.command('run')
 	.description('Run migrations')
-	.argument('<connection_url>', 'database connection url (e.g.: postgres://user:password@host:5432/database)')
+	.option('--url <string>', 'connection string url', 'DATABASE_URL')
+	.option('--user <string>', 'user', 'PGUSER')
+	.option('--password <string>', 'password', 'PGPASSWORD')
+	.option('--host <string>', 'host', 'PGHOST')
+	.option('--port <string>', 'port', 'PGPORT')
+	.option('--database <string>', 'database', 'PGDATABASE')
 	.option('-d, --dir <string>', 'path to migrations directory', DEFAULT_DIRECTORY)
 	.option('-t, --table <string>', 'migrations history table name', DEFAULT_TABLE)
-	.action(async (connectionUrl, options) => {
-		const client = new pg.Client({ connectionString: connectionUrl });
+	.action(async (options) => {
+		/** @type {pg.ClientConfig} */
+		const config = {};
+		if (options.user) {
+			config.user = process.env[options.user] ?? options.user;
+		}
+		if (options.password) {
+			config.password = process.env[options.password] ?? options.password;
+		}
+		if (options.host) {
+			config.host = process.env[options.host] ?? options.host;
+		}
+		if (options.database) {
+			config.database = process.env[options.database] ?? options.database;
+		}
+		if (options.user) {
+			config.user = process.env[options.user] ?? options.user;
+		}
+		if (options.url) {
+			config.connectionString = process.env[options.url] ?? options.url;
+		}
+
+		const client = new pg.Client(config);
 		await client.connect();
 
 		try {
@@ -61,9 +86,7 @@ program.command('run')
 				)
 			`);
 
-			const all = await fs
-				.readdir(options.dir)
-				.then((items) => items.filter((item) => item.endsWith('.sql')));
+			const all = await fs.readdir(options.dir).then((items) => items.filter((item) => item.endsWith('.sql')));
 
 			/** @type {string[]} */
 			const existing = await client
