@@ -28,12 +28,12 @@ Options:
 Usage: pg-migrate run [options] <connection_url>
 
 Options:
-	--url <string> 				env name or value of database connection url (default env.DATABASE_URL)
-	--user <string> 			env name or value of database user (default env.PGUSER)
-	--password <string> 	env name or value of database password (default env.PGPASSWORD)
-	--host <string> 			env name or value of database host (default env.PGHOST)
-	--port <string> 			env name or value of database port (default env.PGPORT)
-	--database <string> 	env name or value of name (default env.PGDATABASE)
+	--url <string> 		env variable or value of db connection url (default env.DATABASE_URL)
+	--user <string> 	env variable or value of db user (default env.PGUSER)
+	--password <string> env variable or value of db password (default env.PGPASSWORD)
+	--host <string> 	env variable or value of db host (default env.PGHOST)
+	--port <string> 	env variable or value of db port (default env.PGPORT)
+	--database <string> env variable or value of db name (default env.PGDATABASE)
   -d, --dir <string>    path to migrations directory (default: "migrations")
   -t, --table <string>  migrations history table name (default: "migrations")
   -h, --help            display help for command
