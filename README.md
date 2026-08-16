@@ -25,7 +25,7 @@ Options:
 ## Run migrations
 
 ```
-Usage: pg-migrate run [options] <connection_url>
+Usage: pg-migrate run [options]
 
 Options:
 	--url <string> 				env variable or value of db connection url (default: DATABASE_URL)
